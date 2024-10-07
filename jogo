@@ -1,0 +1,92 @@
+function mostraRaqueteOponente() {  
+    fill("white"); // Cor da raquete do oponente  
+    rect(xRaqueteOponente, yRaqueteOponente, larguraRaquete, alturaRaquete); // Desenha a raquete  
+}  
+
+function mostraBolinha() {
+  fill("pink"); //cor da bolinha
+  stroke("black"); //contorno
+  circle(xBolinha, yBolinha, Diametro); //Criei bolinha
+}
+
+function movimentoBolinha() {
+  xBolinha += VelocidadexBolinha; //mova bolinha
+  yBolinha += VelocidadeyBolinha; //mova bolinha
+}
+
+function VerificaColisaoBorda() {
+  if (xBolinha > width || xBolinha < 0) {
+    VelocidadexBolinha *= -1; // bate e volta
+  }
+
+  if (yBolinha > height || yBolinha < 0) {
+    VelocidadeyBolinha *= -1; //bate e volta
+  }
+}
+
+function mostraRaquete() {
+  //minha raquete
+  fill("pink");
+  rect(xRaquete, yRaquete, larguraRaquete, alturaRaquete);
+}
+
+function movimentaMinhaRaquete() {
+  if(keyIsDown(UP_ARROW)) {
+    yRaquete -= 10;
+  }
+  if(keyIsDown(DOWN_ARROW)) {
+    yRaquete += 10;
+  }
+}
+
+function movimentaMouse() {
+  if (mouseIsPressed) {
+    yRaquete = mouseY;
+  }
+}
+
+function colisaoMinhaRaquete() {
+  colidiu = collideRectCircle(xRaquete,yRaquete,larguraRaquete,alturaRaquete,xBolinha,yBolinha,Diametro / 2);
+  console.log("Colisao? " + colidiu);
+  if (colidiu) {
+    VelocidadexBolinha *= -1;
+  }
+}
+// Definição da função de colisão  
+function collideRectCircle(rectX, rectY, rectWidth, rectHeight, circleX, circleY, circleRadius) {  
+    let closestX = clamp(circleX, rectX, rectX + rectWidth);  
+    let closestY = clamp(circleY, rectY, rectY + rectHeight);  
+    let distanceX = circleX - closestX;  
+    let distanceY = circleY - closestY;  
+    return (distanceX * distanceX + distanceY * distanceY) < (circleRadius * circleRadius);  
+}  
+ 
+function clamp(value, min, max) {  
+    return Math.max(min, Math.min(max, value));  
+}  
+ 
+function MovimentaRaqueteOponente() {  
+    // W e S  
+    if (keyIsDown(87)) {  
+        yRaqueteOponente -= 10;  
+    }  
+    if (keyIsDown(83)) {  
+        yRaqueteOponente += 10;  
+    }  
+}  
+  
+function ColisaoRaqueteOponente() {  
+    let colidiu = collideRectCircle(  
+        xRaqueteOponente,  
+        yRaqueteOponente,  
+        larguraRaquete,  
+        alturaRaquete,  
+        xBolinha,  
+        yBolinha,  
+        Diametro / 2  
+    );  
+
+    if (colidiu) {  
+        VelocidadexBolinha *= -1;   
+    }  
+}  
